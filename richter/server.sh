@@ -31,11 +31,23 @@ if check_port; then
     exit 1
 fi
 
+# Get local IP address
+LOCAL_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
+if [ -z "$LOCAL_IP" ]; then
+  LOCAL_IP=$(ip addr show 2>/dev/null | grep -oP 'inet \K[\d.]+' | grep -v '127.0.0.1' | head -1)
+fi
+if [ -z "$LOCAL_IP" ]; then
+  LOCAL_IP="<YOUR_IP>"
+fi
+
 echo ""
 echo "🚀 Starting HTTP server on port $PORT..."
-echo "📱 Open http://localhost:$PORT/richter.html in your browser"
+echo "📱 Local access: http://localhost:$PORT/richter.html"
+if [ "$LOCAL_IP" != "<YOUR_IP>" ]; then
+  echo "🌐 Network access: http://$LOCAL_IP:$PORT/richter.html"
+fi
 echo "⏹️  Press Ctrl+C to stop"
 echo ""
 
 cd "$(dirname "$0")"
-python3 -m http.server $PORT
+python3 -m http.server $PORT --bind 0.0.0.0
