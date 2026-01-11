@@ -1,0 +1,80 @@
+<div id="page-settings" class="page">
+  <div class="page-header">
+    <h1>Cài đặt</h1>
+    <p>Cấu hình hệ thống giám sát rung chấn</p>
+  </div>
+
+  <div class="settings-content">
+    <div class="settings-section">
+      <h2>Cảnh báo</h2>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <span class="settings-label">Ngưỡng cảnh báo (g)</span>
+          <span class="settings-desc">Khi gia tốc vượt ngưỡng này, hệ thống sẽ phát cảnh báo</span>
+        </div>
+        <input type="number" id="alert-threshold" class="settings-input" value="2.0" step="0.1" min="0.1" max="10.0" onchange="updateAlertThreshold()">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>Hiệu suất</h2>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <span class="settings-label">Tần số cập nhật (ms)</span>
+          <span class="settings-desc">Khoảng thời gian giữa các lần cập nhật dữ liệu</span>
+        </div>
+        <input type="number" id="update-frequency" class="settings-input" value="100" step="10" min="50" max="1000" onchange="updateFrequency()">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>Bản đồ</h2>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <span class="settings-label">Hiển thị trail trên bản đồ</span>
+          <span class="settings-desc">Hiển thị đường đi của thiết bị trên bản đồ</span>
+        </div>
+        <input type="checkbox" id="show-trail" checked onchange="toggleTrail()">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>Dữ liệu</h2>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <span class="settings-label">Số điểm dữ liệu tối đa</span>
+          <span class="settings-desc">Số lượng điểm dữ liệu hiển thị trên biểu đồ</span>
+        </div>
+        <input type="number" id="max-data-points" class="settings-input" value="100" step="10" min="50" max="500" onchange="updateMaxDataPoints()">
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <span class="settings-label">Xuất dữ liệu</span>
+          <span class="settings-desc">Tải xuống tất cả dữ liệu đã ghi nhận dưới dạng CSV</span>
+        </div>
+        <button class="btn btn-primary" onclick="exportData()">Xuất CSV</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>Kết nối</h2>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <span class="settings-label">Thiết bị Bluetooth</span>
+          <span class="settings-desc">Kết nối hoặc ngắt kết nối với thiết bị ESP32</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-primary" onclick="connectBluetooth()">Kết nối</button>
+          <button class="btn btn-danger" onclick="disconnectBluetooth()">Ngắt kết nối</button>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <span class="settings-label">Trạng thái</span>
+          <span id="device-status-settings" class="settings-value">Chưa kết nối</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

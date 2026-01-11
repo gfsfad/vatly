@@ -1,0 +1,105 @@
+<div id="page-dashboard" class="page active">
+  <div class="quick-actions">
+    <div class="action-btn" onclick="getLocation()">
+      <div class="action-btn-label">Định vị vị trí tôi</div>
+    </div>
+    <div class="action-btn" onclick="exportData()">
+      <div class="action-btn-label">Xuất dữ liệu</div>
+    </div>
+  </div>
+
+  <div class="dashboard">
+    <div class="left-col">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-label">Trạng thái</div>
+          </div>
+          <div class="stat-value" id="card-status">Chưa kết nối</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-label">Gia tốc (g)</div>
+            <span id="acc-indicator" class="alert-indicator inactive">Bình thường</span>
+          </div>
+          <div class="stat-value" id="card-acc">—<span class="stat-unit">g</span></div>
+          <div class="stat-trend" id="acc-trend">Cập nhật: —</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-label">Cường độ</div>
+          </div>
+          <div class="stat-value" id="card-intensity">—<span class="stat-unit">Richter</span></div>
+          <div class="stat-trend" id="intensity-trend">Cập nhật: —</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-label">Tần số mẫu</div>
+          </div>
+          <div class="stat-value" id="card-sr">—<span class="stat-unit">Hz</span></div>
+        </div>
+
+        <div class="device-info-card">
+          <div class="device-info-title">Thông tin thiết bị</div>
+          <div class="device-info-row">
+            <span class="device-info-label">Vĩ độ</span>
+            <span class="device-info-value" id="device-lat">—</span>
+          </div>
+          <div class="device-info-row">
+            <span class="device-info-label">Kinh độ</span>
+            <span class="device-info-value" id="device-lon">—</span>
+          </div>
+          <div class="device-info-row">
+            <span class="device-info-label">Cập nhật</span>
+            <span class="device-info-value" id="device-last">—</span>
+          </div>
+          <div class="device-info-row">
+            <span class="device-info-label">Pin</span>
+            <span class="device-info-value" id="device-batt">—</span>
+          </div>
+        </div>
+
+        <div class="event-log-container">
+          <div class="event-log-title">Sự kiện & Log</div>
+          <textarea id="event-log" readonly placeholder="Log sự kiện sẽ hiển thị ở đây..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="chart-container">
+        <div class="chart-title">Biểu đồ rung chấn thời gian thực</div>
+        <div class="chart-wrapper">
+          <canvas id="vibrationChart"></canvas>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <div class="map-title">
+          <span>Vị trí thiết bị & Bản đồ</span>
+          <button class="btn btn-secondary" onclick="centerMapOnDevice()" style="font-size: 12px; padding: 6px 12px;">
+            Tìm thiết bị
+          </button>
+        </div>
+        <div id="deviceMap" class="map-wrapper"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ble-panel">
+    <div class="ble-status">
+      <span>Bluetooth:</span>
+      <span id="ble-status">Chưa kết nối</span>
+    </div>
+    <textarea id="ble-log" readonly placeholder="Log kết nối Bluetooth sẽ hiển thị ở đây..."></textarea>
+    <div class="ble-controls">
+      <input id="ble-input" type="text" placeholder="Nhập lệnh gửi đến ESP32 (ví dụ: PING, GET_STATUS)" onkeypress="if(event.key==='Enter') sendToDevice()">
+      <button class="btn btn-primary" id="ble-send" onclick="sendToDevice()">Gửi</button>
+      <button class="btn btn-danger" id="ble-disconnect" onclick="disconnectBluetooth()">Ngắt kết nối</button>
+    </div>
+  </div>
+</div>
+
