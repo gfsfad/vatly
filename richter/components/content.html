@@ -1,0 +1,32 @@
+<div class="dashboard">
+  <div class="left-col">
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Trạng thái thiết bị</div>
+        <div id="card-status" class="card-value">Chưa kết nối</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Gia tốc (g)</div>
+        <div id="card-acc" class="card-value">—</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Tần số mẫu</div>
+        <div id="card-sr" class="card-value">—</div>
+      </div>
+    </div>
+
+    <div class="log-panel">
+      <div class="panel-title">Sự kiện & Log</div>
+      <textarea id="event-log" readonly placeholder="Log sự kiện..."></textarea>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <div class="panel-title">Biểu đồ rung chấn thời gian thực</div>
+    <canvas id="vibrationChart" height="200"></canvas>
+    <div class="map-embed">
+      <div class="map-title">Bản đồ động đất thời gian thực</div>
+      <iframe class="map-frame" src="https://earth3dmap.com/earthquake-live-map/" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</div>

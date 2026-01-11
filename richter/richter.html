@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhóm 1 - Cảnh Báo Động Đất</title>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px;
+  }
+  .container {
+    width: 90%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+  .title {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhóm 1 - Cảnh Báo Động Đất</title>
+    <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+      <div id="header"></div>
+      <div id="content"></div>
+      <div id="footer"></div>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+      <script src="components/scripts.js"></script>
+      <script>
+        // Load header/content/footer components
+        (async function(){
+          await loadComponent('header','components/header.html');
+          await loadComponent('content','components/content.html');
+          await loadComponent('footer','components/footer.html');
+        })();
+      </script>
+    </body>
+    </html>
+    }
+    const device = await navigator.bluetooth.requestDevice({
+      filters: [{ namePrefix: 'ESP32' }],
+      optionalServices: ['0000180a-0000-1000-8000-00805f9b34fb']
+    });
+    const server = await device.gatt.connect();
+    alert("Kết nối Bluetooth thành công với thiết bị: " + device.name + "!");
+  } catch (error) {
+    alert("Lỗi kết nối Bluetooth: " + error.message);
+  }
+}
+function showDirectionsMap() {
+  if (!navigator.geolocation) {
+    alert("Trình duyệt không hỗ trợ định vị. Hãy mở Google Maps thủ công và tìm 'nơi trú ẩn động đất gần tôi'.");
+    window.open("https://www.google.com/maps/search/nơi+trú+ẩn+động+đất+gần+tôi", "_blank");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    var directionsUrl = "https://www.google.com/maps/dir/" + lat + "," + lon + "/nơi+trú+ẩn+động+đất+gần+tôi/@" + lat + "," + lon + ",14z/data=!3m1!4b1!4m2!4m1!3e0";
+    var win = window.open('', '_blank', 'width=1000,height=700,resizable=yes');
+    win.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Chỉ đường đến nơi trú ẩn an toàn</title>
+        <style>
+          body, html { margin:0; padding:0; height:100%; }
+          iframe { width:100%; height:100%; border:none; }
+        </style>
+      </head>
+      <body>
+        <iframe src="${directionsUrl}"></iframe>
+      </body>
+      </html>
+    `);
+    win.document.close();
+  }, function() {
+    alert("Không lấy được vị trí. Hãy mở Google Maps và tìm 'nơi trú ẩn động đất gần tôi'.");
+    window.open("https://www.google.com/maps/search/nơi+trú+ẩn+động+đất+gần+tôi", "_blank");
+  });
+}
+
+// Hàm đơn giản: bấm nút "Cách thoát hiểm" sẽ mở tab mới trực tiếp đến Canva
+function openEscapeGuide() {
+  // Thay link này bằng link VIEW PUBLIC của bạn (sau khi Share > Anyone with the link > Can view)
+  var canvaUrl = "https://www.canva.com/design/DAG8aIzD1PY/_kruFygy91cJfloI8xMFSg/view";
+  window.open(canvaUrl, '_blank');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+  <div class="topbar">
+    <div class="brand">Nhóm 1 • Giám sát rung chấn</div>
+    <div class="top-actions">
+      <button id="connect-btn" onclick="connectBluetooth()">Kết nối Bluetooth</button>
+      <span id="device-name">(chưa có thiết bị)</span>
+    </div>
+  </div>
+  <div class="container">
+  <div class="title">Nhóm 1 - Giám sát & Cảnh Báo Động Đất</div>
+  <div class="alert">
+    <strong>CẢNH BÁO ĐỘNG ĐẤT!</strong>
+    Khu vực hiện có nguy cơ cao xảy ra động đất!<br><br>
+    Hãy chuẩn bị sẵn sàng: Nằm rạp – Che đầu – Bám chặt!<br>
+    Nguy cơ sập đổ và dư chấn rất cao!
+  </div>
+  <div class="buttons">
+    <div class="round-button" onclick="alert('Chức năng Khai báo: Báo ngay nếu cảm nhận dư chấn hoặc thiệt hại!')">
+      <img src="https://img.icons8.com/color/96/000000/siren.png" alt="Khai báo">
+      <span>Khai báo<br>dư chấn</span>
+    </div>
+    <div class="round-button" onclick="openEscapeGuide()">
+      <img src="https://img.icons8.com/color/96/000000/protect.png" alt="Thoát hiểm">
+      <span>Cách <br>thoát hiểm</span>
+    </div>
+    <div class="round-button" onclick="getLocation()">
+      <img src="https://img.icons8.com/color/96/000000/map-marker.png" alt="Định vị">
+      <span>Định vị<br>vị trí tôi</span>
+    </div>
+    <div class="round-button" onclick="connectBluetooth()">
+      <img src="https://img.icons8.com/color/96/000000/bluetooth.png" alt="Bluetooth">
+      <span>Kết nối<br>Bluetooth</span>
+    </div>
+    <div class="round-button" onclick="showDirectionsMap()">
+      <img src="https://img.icons8.com/color/96/000000/google-maps-new.png" alt="Chỉ đường">
+      <span>Chỉ đường<br>thoát hiểm</span>
+    </div>
+  </div>
+  </div>
+  <div class="ble-panel">
+    <div id="ble-status">Bluetooth: chưa kết nối</div>
+    <textarea id="ble-log" readonly rows="4" placeholder="Log kết nối BLE..."></textarea>
+    <div class="ble-controls">
+      <input id="ble-input" placeholder="Gửi lệnh đến ESP (ví dụ: PING)" />
+      <button id="ble-send" onclick="sendToDevice()">Gửi</button>
+      <button id="ble-disconnect" onclick="disconnectBluetooth()">Ngắt kết nối</button>
+    </div>
+  </div>
