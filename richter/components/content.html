@@ -5,6 +5,12 @@
         <div class="card-title">Trạng thái thiết bị</div>
         <div id="card-status" class="card-value">Chưa kết nối</div>
       </div>
+      <div class="device-card" id="device-info-card">
+        <div class="device-row"><div class="label">Vĩ độ</div><div id="device-lat" class="value">—</div></div>
+        <div class="device-row"><div class="label">Kinh độ</div><div id="device-lon" class="value">—</div></div>
+        <div class="device-row"><div class="label">Cập nhật</div><div id="device-last" class="value">—</div></div>
+        <div class="device-row"><div class="label">Pin</div><div id="device-batt" class="value">—</div></div>
+      </div>
       <div class="card">
         <div class="card-title">Gia tốc (g)</div>
         <div id="card-acc" class="card-value">—</div>
@@ -25,8 +31,8 @@
     <div class="panel-title">Biểu đồ rung chấn thời gian thực</div>
     <canvas id="vibrationChart" height="200"></canvas>
     <div class="map-embed">
-      <div class="map-title">Bản đồ động đất thời gian thực</div>
-      <iframe class="map-frame" src="https://earth3dmap.com/earthquake-live-map/" allowfullscreen loading="lazy"></iframe>
+      <div class="map-title">Vị trí thiết bị & Bản đồ</div>
+      <div id="deviceMap" class="map-frame"></div>
     </div>
   </div>
 </div>

@@ -20,14 +20,28 @@ async function loadComponent(id, path) {
 }
 
 // ensure dashboard initializes after components are loaded
-document.addEventListener('DOMContentLoaded', function(){
-  // if components already loaded by custom loader, wait small time then init
-  setTimeout(initDashboard, 300);
+document.addEventListener('DOMContentLoaded', async function(){
+  // Load header, content, footer components, then initialize dashboard
+  try {
+    await Promise.all([
+      loadComponent('header', 'components/header.html'),
+      loadComponent('content', 'components/content.html'),
+      loadComponent('footer', 'components/footer.html')
+    ]);
+  } catch (e) {
+    console.error('Lỗi khi tải components:', e);
+  }
+
+  // allow a short time for DOM insertion then initialize
+  setTimeout(initDashboard, 200);
 });
 
 // Dashboard / Chart.js setup
 let vibrationChart = null;
 let chartData = { labels: [], datasets: [{ label: 'Acceleration', data: [], borderColor: '#ff6b6b', backgroundColor: 'rgba(255,107,107,0.15)', tension: 0.25 }] };
+// Map (Leaflet)
+let deviceMap = null;
+let deviceMarker = null;
 
 function initDashboard(){
   const ctx = document.getElementById('vibrationChart');
@@ -42,7 +56,37 @@ function initDashboard(){
     }
   });
 
+  // initialize map (if present)
+  try { initMap(); } catch(e){ console.warn('Map init failed:', e); }
+
   // also pipe logs to event-log textarea
+}
+
+function initMap(){
+  const el = document.getElementById('deviceMap');
+  if(!el) return;
+  // create map only once
+  if(deviceMap) return;
+  deviceMap = L.map('deviceMap', { zoomControl:true }).setView([21.0278,105.8342], 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(deviceMap);
+  deviceMarker = L.marker([21.0278,105.8342]).addTo(deviceMap).bindPopup('Vị trí thiết bị');
+}
+
+function updateDeviceLocation(lat, lon){
+  if(!deviceMap) initMap();
+  if(!deviceMap) return;
+  if(!deviceMarker) deviceMarker = L.marker([lat,lon]).addTo(deviceMap).bindPopup('Vị trí thiết bị');
+  else deviceMarker.setLatLng([lat,lon]);
+  deviceMarker.bindPopup(`Thiết bị: ${lat.toFixed(5)}, ${lon.toFixed(5)}`);
+  deviceMap.flyTo([lat,lon], 14, { animate:true, duration: 1.0 });
+  appendEvent('Vị trí thiết bị cập nhật: ' + lat.toFixed(5) + ', ' + lon.toFixed(5));
+  // update UI fields if present
+  const latEl = document.getElementById('device-lat'); if(latEl) latEl.textContent = lat.toFixed(5);
+  const lonEl = document.getElementById('device-lon'); if(lonEl) lonEl.textContent = lon.toFixed(5);
+  const lastEl = document.getElementById('device-last'); if(lastEl) lastEl.textContent = new Date().toLocaleString();
 }
 
 function addChartPoint(value){
@@ -105,6 +149,7 @@ async function connectBluetooth() {
     appendToLog('CONNECTED: ' + (bluetoothDevice.name || 'ESP'));
     const nameEl = document.getElementById('device-name'); if(nameEl) nameEl.textContent = bluetoothDevice.name || 'ESP';
     const card = document.getElementById('card-status'); if(card) card.textContent = 'Đã kết nối';
+    const statusBadge = document.getElementById('device-status'); if(statusBadge){ statusBadge.textContent='Online'; statusBadge.classList.remove('off'); }
     // init dashboard after components loaded
     setTimeout(initDashboard, 200);
   } catch (err) {
@@ -118,6 +163,7 @@ async function connectBluetooth() {
 function onDisconnected(event) {
   appendToLog('Thiết bị đã ngắt kết nối');
   updateStatus('Đã ngắt kết nối');
+  const statusBadge = document.getElementById('device-status'); if(statusBadge){ statusBadge.textContent='Offline'; statusBadge.classList.add('off'); }
 }
 
 function handleNotifications(event) {
@@ -127,6 +173,25 @@ function handleNotifications(event) {
   const text = decoder.decode(value);
   appendToLog('RX ← ' + text);
   appendEvent('RX ← ' + text);
+
+  // Try parse JSON payload first (e.g., {"lat":...,"lon":...,"acc":...})
+  try {
+    const obj = JSON.parse(text);
+    if (obj) {
+      if (obj.lat && obj.lon) updateDeviceLocation(parseFloat(obj.lat), parseFloat(obj.lon));
+      if (obj.acc) { const n = parseFloat(obj.acc); if(!isNaN(n)) addChartPoint(n); }
+      if (obj.sr) { const el = document.getElementById('card-sr'); if(el) el.textContent = obj.sr; }
+      return;
+    }
+  } catch(e){ /* not JSON */ }
+
+  // Try parse coordinate pair like "lat,lon"
+  const coord = text.match(/(-?\d+\.\d+)[,\s]+(-?\d+\.\d+)/);
+  if(coord){
+    const lat = parseFloat(coord[1]);
+    const lon = parseFloat(coord[2]);
+    if(!isNaN(lat) && !isNaN(lon)) updateDeviceLocation(lat, lon);
+  }
 
   // Try parse numeric acceleration value (examples supported: "0.123", "ACC:0.123", "A=0.123")
   const m = text.match(/(-?\d+\.?\d*)/);

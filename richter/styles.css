@@ -1,6 +1,13 @@
+.root {
+  --bg-a: #1e3c72;
+  --bg-b: #2a5298;
+  --accent: #ff6b6b;
+  --muted: rgba(255,255,255,0.12);
+  --card-bg: rgba(255,255,255,0.04);
+}
 body {
   margin: 0;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  background: linear-gradient(135deg, var(--bg-a), var(--bg-b));
   font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
   color: #fff;
   min-height: 100vh;
@@ -10,38 +17,42 @@ body {
   padding: 20px 10px;
 }
 .container {
-  width: 90%;
-  max-width: 900px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  width: 92%;
+  max-width: 1100px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
-.topbar { width:100%; display:flex; justify-content:space-between; align-items:center; padding:12px 10px; margin-bottom:12px; }
-.topbar .brand { color:#fff; font-weight:700; font-size:18px; }
+.topbar { width:100%; display:flex; justify-content:space-between; align-items:center; padding:10px 12px; margin-bottom:14px; }
+.topbar .brand { color:#fff; font-weight:800; font-size:18px; display:flex; gap:10px; align-items:center; }
+.brand .logo { width:36px; height:36px; border-radius:8px; background:var(--accent); display:inline-flex; align-items:center; justify-content:center; font-weight:800; color:#fff; }
 .top-actions { display:flex; gap:12px; align-items:center; }
-.top-actions button { background:#ff6b6b; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.top-actions button { background:var(--accent); color:#fff; border:none; padding:8px 14px; border-radius:10px; cursor:pointer; font-weight:700; box-shadow:0 6px 18px rgba(255,107,107,0.18); }
 .top-actions #device-name { color:#ffdede; font-size:14px; }
+
+.status-badge { display:inline-block; padding:6px 10px; border-radius:999px; font-weight:700; color:#fff; background:linear-gradient(90deg,#28c76f,#10b981); box-shadow:0 6px 16px rgba(16,185,129,0.14); }
+.status-badge.off { background:linear-gradient(90deg,#ef4444,#b91c1c); box-shadow:0 6px 16px rgba(233,30,99,0.14); }
 .title {
-  font-size: 36px;
-  font-weight: bold;
+  font-size: 34px;
+  font-weight: 800;
   text-align: center;
-  margin-bottom: 30px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-  color: #ff6b6b;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.45);
+  color: var(--accent);
 }
 .alert {
   background: linear-gradient(90deg, #e74c3c, #c0392b);
   color: white;
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 800;
   text-align: center;
-  padding: 30px;
-  margin-bottom: 40px;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
-  animation: pulse 2s infinite, glow 1.5s infinite alternate;
+  padding: 20px;
+  margin-bottom: 26px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.35);
+  animation: pulse 2.4s infinite, glow 1.6s infinite alternate;
 }
 @keyframes pulse {
   0% { transform: scale(1); }
@@ -60,24 +71,24 @@ body {
 .buttons {
   display: flex;
   justify-content: center;
-  gap: 50px;
-  margin-bottom: 50px;
+  gap: 28px;
+  margin-bottom: 36px;
   flex-wrap: wrap;
 }
 .round-button {
-  width: 140px;
-  height: 140px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
   cursor: pointer;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(5px);
-  border: 2px solid rgba(255,255,255,0.2);
+  transition: all 0.28s ease;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 .round-button:hover {
   transform: translateY(-10px) scale(1.1);
@@ -85,10 +96,10 @@ body {
   box-shadow: 0 15px 30px rgba(255, 107, 107, 0.5);
 }
 .round-button img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+  width: 56px;
+  height: 56px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
 }
 .round-button span {
   font-size: 18px;
@@ -109,11 +120,11 @@ body {
 }
 .map-frame {
   width: 100%;
-  height: 600px;
-  border: 5px solid #ff6b6b;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  height: 420px;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.45);
   overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.04);
 }
 .update-note {
   font-size: 17px;
@@ -127,10 +138,10 @@ body {
 }
 
 .ble-panel {
-  margin-top: 18px;
-  background: rgba(0,0,0,0.12);
+  margin-top: 14px;
+  background: rgba(0,0,0,0.10);
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 .ble-panel #ble-status {
   font-weight: bold;
@@ -158,9 +169,14 @@ body {
 .left-col { width:320px; display:flex; flex-direction:column; gap:14px; }
 .right-col { flex:1; display:flex; flex-direction:column; gap:12px; }
 .cards { display:grid; grid-template-columns:1fr; gap:12px; }
-.card { background:rgba(255,255,255,0.04); padding:12px; border-radius:10px; }
+.card { background:var(--card-bg); padding:12px; border-radius:10px; display:flex; flex-direction:column; gap:6px; }
 .card-title { font-size:13px; color:#ffdede; margin-bottom:6px; }
-.card-value { font-size:22px; font-weight:700; }
+.card-value { font-size:20px; font-weight:800; color:#fff; }
+
+.device-card { background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); padding:12px; border-radius:10px; display:flex; flex-direction:column; gap:6px; }
+.device-row { display:flex; justify-content:space-between; gap:8px; }
+.device-row .label { color:#ffdede; font-size:13px; }
+.device-row .value { font-weight:800; }
 .log-panel { background:rgba(0,0,0,0.12); padding:10px; border-radius:8px; }
 .log-panel textarea { width:100%; height:140px; background:transparent; border:1px solid rgba(255,255,255,0.06); color:#fff; padding:8px; border-radius:6px; }
 .panel-title { font-weight:700; color:#ffdede; margin-bottom:8px; }
@@ -169,4 +185,10 @@ body {
 @media (max-width:900px){
   .dashboard{flex-direction:column}
   .left-col{width:100%}
+}
+
+@media (max-width:600px){
+  .map-frame { height: 260px; }
+  .round-button { width: 110px; height:110px; }
+  .title { font-size: 22px; }
 }
