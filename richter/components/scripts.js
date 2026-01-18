@@ -17,7 +17,7 @@ let vibrationChart = null;
 let chartData = {
   labels: [],
   datasets: [{
-    label: 'Gia tốc (g)',
+    label: 'Biên độ',
     data: [],
     borderColor: '#6366f1',
     backgroundColor: 'rgba(99, 102, 241, 0.1)',
@@ -223,7 +223,7 @@ function initChart() {
           },
           title: {
             display: true,
-            text: 'Gia tốc (g)',
+            text: 'Biên độ',
             color: 'rgba(255, 255, 255, 0.7)'
           }
         }
@@ -497,7 +497,7 @@ function addChartPoint(value) {
 function updateAccelerationCard(value) {
   const el = document.getElementById('card-acc');
   if (el) {
-    el.textContent = value.toFixed(3);
+    el.textContent = value.toFixed(0);
   }
   
   const trendEl = document.getElementById('acc-trend');
@@ -506,29 +506,15 @@ function updateAccelerationCard(value) {
   }
 }
 
-// Convert amplitude to dB (proportional/linear conversion)
-// Calibration: amplitude 0 = 0 dB, amplitude 1600 = 6 dB
-function amplitudeToDB(amplitude) {
-  // Proportional conversion: dB = (amplitude / 1600) * 6
+function calculateRichterScale(amplitude) {
+  // Richter scale conversion directly from raw amplitude value
+  // Calibration: amplitude 0 = 0 Richter, amplitude 1600 = 6 Richter
+  // Simple proportional conversion: Richter = (amplitude / 1600) * 6
+  
   if (amplitude <= 0) return 0;
-  return (amplitude / 1600) * 6;
-}
-
-function calculateRichterScale(acceleration) {
-  // Richter scale conversion based on ESP32 amplitude values
-  // Using proportional dB conversion: 0 amplitude = 0 dB, 1600 amplitude = 6 dB
-  // Then convert dB to Richter scale
   
-  if (acceleration <= 0) return 0;
-  
-  // Convert amplitude to dB (proportional)
-  const dB = amplitudeToDB(acceleration);
-  
-  // Convert dB to Richter scale
-  // General relationship: Richter magnitude ≈ dB / scale_factor
-  // Calibration: 6 dB = Richter 6.0, so scale_factor = 1
-  // Therefore: Richter = dB
-  const richterValue = dB;
+  // Direct proportional conversion: Richter = (amplitude / 1600) * 6
+  const richterValue = (amplitude / 1600) * 6;
   
   // Clamp to reasonable range
   if (richterValue < 0) return 0;
@@ -572,7 +558,7 @@ function checkAlertThreshold(value) {
       chartData.datasets[0].backgroundColor = 'rgba(239, 68, 68, 0.2)';
     }
     
-    appendEvent(`CẢNH BÁO: Gia tốc ${value.toFixed(3)}g vượt ngưỡng ${settings.alertThreshold}g`);
+    appendEvent(`CẢNH BÁO: Biên độ ${value.toFixed(0)} vượt ngưỡng ${settings.alertThreshold}`);
   } else {
     // Hide alert
     if (indicator) {
@@ -636,7 +622,7 @@ function showEarthquakeAlert(richterValue, acceleration) {
     const timeEl = document.getElementById('modal-time');
     
     if (richterEl) richterEl.textContent = richterValue.toFixed(1);
-    if (accEl) accEl.textContent = acceleration.toFixed(3) + ' g';
+    if (accEl) accEl.textContent = acceleration.toFixed(0);
     if (timeEl) timeEl.textContent = new Date().toLocaleString('vi-VN');
     
     // Play alert sound (if supported)
@@ -671,8 +657,8 @@ function createEarthquakeModal(richterValue, acceleration) {
             <div class="earthquake-stat-value" id="modal-richter-value">${richterValue.toFixed(1)}</div>
           </div>
           <div class="earthquake-stat">
-            <div class="earthquake-stat-label">Gia tốc</div>
-            <div class="earthquake-stat-value" id="modal-acc-value">${acceleration.toFixed(3)} g</div>
+            <div class="earthquake-stat-label">Biên độ</div>
+            <div class="earthquake-stat-value" id="modal-acc-value">${acceleration.toFixed(0)}</div>
           </div>
           <div class="earthquake-stat">
             <div class="earthquake-stat-label">Thời gian</div>
