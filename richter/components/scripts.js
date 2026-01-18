@@ -506,13 +506,35 @@ function updateAccelerationCard(value) {
   }
 }
 
+// Convert amplitude to dB (proportional/linear conversion)
+// Calibration: amplitude 0 = 0 dB, amplitude 1600 = 6 dB
+function amplitudeToDB(amplitude) {
+  // Proportional conversion: dB = (amplitude / 1600) * 6
+  if (amplitude <= 0) return 0;
+  return (amplitude / 1600) * 6;
+}
+
 function calculateRichterScale(acceleration) {
-  // Rough approximation: Richter scale from acceleration
-  // This is a simplified conversion, not scientifically precise
-  if (acceleration < 0.01) return 0;
-  if (acceleration < 0.1) return (Math.log10(acceleration * 100) + 1).toFixed(1);
-  if (acceleration < 1.0) return (Math.log10(acceleration * 10) + 2).toFixed(1);
-  return (Math.log10(acceleration) + 3).toFixed(1);
+  // Richter scale conversion based on ESP32 amplitude values
+  // Using proportional dB conversion: 0 amplitude = 0 dB, 1600 amplitude = 6 dB
+  // Then convert dB to Richter scale
+  
+  if (acceleration <= 0) return 0;
+  
+  // Convert amplitude to dB (proportional)
+  const dB = amplitudeToDB(acceleration);
+  
+  // Convert dB to Richter scale
+  // General relationship: Richter magnitude ≈ dB / scale_factor
+  // Calibration: 6 dB = Richter 6.0, so scale_factor = 1
+  // Therefore: Richter = dB
+  const richterValue = dB;
+  
+  // Clamp to reasonable range
+  if (richterValue < 0) return 0;
+  if (richterValue > 10) return 10;
+  
+  return richterValue.toFixed(1);
 }
 
 function updateIntensityCard(intensity) {
